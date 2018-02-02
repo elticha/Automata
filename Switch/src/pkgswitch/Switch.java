@@ -3,9 +3,10 @@ package pkgswitch;
 import java.util.Scanner;
 
 /**
- * Autómata para la estructura Switch(). Materia: Lenguajes y Autómatas. Fecha:
- * 01 de febrero de 2018 Lugar: UP-Chiapas 5º "A"
- *
+ * Autómata para la estructura Switch().
+ * Materia: Lenguajes y Autómatas.
+ * Fecha: 01 de febrero de 2018
+ * Lugar: UP-Chiapas 5º "A"
  * @author David Pérez S.
  */
 public class Switch {
@@ -38,6 +39,8 @@ public class Switch {
             /*
             if (ok) {
                   // Impresión de datos opcional
+                  System.out.println(" Subdivisiones manejadas internamente");
+                  System.out.println(" -----------------------------------------------------------\n");
                   for (int i = 0; i < elementos.length; i++) {
                         System.out.println(" " + elementos[i]);
                   }
@@ -59,14 +62,22 @@ public class Switch {
             try {
                   // Comienza lógica del Autómata
                   if (ok) {
+                        System.out.println(" Transiciones");
+                        System.out.println(" ---------------------------\n");
                         if (q0(elementos_gato1[0])) {             // Si se lee la palabra "Switch("
+                              System.out.println(" (q0, Switch(#, q1)");
                               if (q1(elementos_gato1[1])) {         //Si recibo un número
+                                    System.out.println(" (q1, " + elementos_gato1[1] + ", q2)");
                                     if (q2(elementos_gato1[1])) {     // Si recibo puros números
+                                          System.out.println(" (q2, e, q4)");
                                           if (q4(elementos_gato1[2])) {   // Comprobar el paréntesis de cierre y llave de apertura
+                                                System.out.println(" (q4, #){, q5)");
                                                 if (q5(elementos_gato2[0])) {     // Comprobar palabra "case"
+                                                      System.out.println(" (q5, %case#, q6)");
                                                       if (redundanciaDeCase()) {
                                                             if (q12(elementos[2])) {
-                                                                  System.out.println(" FELICIDADES !!!");
+                                                                  System.out.println(" (q15, %}, q16)");
+                                                                  System.out.println("\n\n FELICIDADES !!!");
                                                             } else {
                                                                   printErrorMessage();
                                                             }
@@ -83,12 +94,17 @@ public class Switch {
                                           printErrorMessage();
                                     }
                               } else if (q1Aux(elementos_gato1[1])) {     //Si recibo una letra
+                                    System.out.println(" (q1, " + elementos_gato1[1] + ", q3)");
                                     if (q3(elementos_gato1[1])) {           // Si recibo puras letras
+                                          System.out.println(" (q3, e, q4)");
                                           if (q4(elementos_gato1[2])) {         // Comprobar el paréntesis de cierre y llave de apertura
+                                                System.out.println(" (q4, #){, q5)");
                                                 if (q5(elementos_gato2[0])) {     // Comprobar palabra "case"
+                                                      System.out.println(" (q5, %case#, q6)");
                                                       if (redundanciaDeCase()) {
                                                             if (q12(elementos[2])) {
-                                                                  System.out.println("FELICIDADES !!!");
+                                                                  System.out.println(" (q15, %}, q16)");
+                                                                  System.out.println("\n\n FELICIDADES !!!");
                                                             } else {
                                                                   printErrorMessage();
                                                             }
@@ -114,6 +130,11 @@ public class Switch {
             } catch (StringIndexOutOfBoundsException e) {
                   printErrorMessage();
             }
+            System.out.println("\n\n Integrantes de Equipo:");
+            System.out.println(" --------------------------------");
+            System.out.println(" * David Pérez S.");
+            System.out.println(" * Luis Fernando Hernández Morales.");
+            System.out.println(" * Carlos André Sánchez Malpica\n\n");
       }
 
       static boolean redundanciaDeCase() {
@@ -121,10 +142,18 @@ public class Switch {
             boolean bandera = false;
 
             if (q6(elementos_gato2[1])) {     //Si vuelvo a recibir un número
+                  System.out.println(" (q6, " + elementos_gato2[1] + ", q7)");
                   if (q7(elementos_gato2[1])) { // Si vuelvo a recibir puros números
-                        if (q9(elementos_comillas[0])) {
-                              if (q10(elementos_comillas[1])) {
-                                    if (q11(elementos_comillas[2])) {
+                        System.out.println(" (q8, e, q9)");
+                        if (q9(elementos_comillas[0])) {          // Se comprueba la palabra ":print("
+                              System.out.println(" (q9, #:, q10)");
+                              System.out.println(" (q10, print(\", q11)");
+                              if (q10(elementos_comillas[1])) {         // Compruba si la cadena contiene sólo letras o números
+                                    System.out.println(" (q11, e, q12)");
+                                    if (q11(elementos_comillas[2])) {         // Comprobar palabra ");break;"
+                                          System.out.println(" (q12, \"), q13)");
+                                          System.out.println(" (q13, ;break;, q14)");
+                                          System.out.println(" (q14, e, q15)");
                                           bandera = true;
                                     } else {
                                           printErrorMessage();
@@ -139,10 +168,18 @@ public class Switch {
                         printErrorMessage();
                   }
             } else if (q6Aux(elementos_gato2[1])) {      //Si vuelvo a recibir una letra
-                  if (q8(elementos_gato2[1])) { // Si vuelvo a recibir puros números
-                        if (q9(elementos_comillas[0])) {
-                              if (q10(elementos_comillas[1])) {
-                                    if (q11(elementos_comillas[2])) {
+                  System.out.println(" (q6, " + elementos_gato2[1] + ", q8)");
+                  if (q8(elementos_gato2[1])) {       // Si vuelvo a recibir puras letras
+                        System.out.println(" (q7, e, q9)");        // Se comprueba la palabra ":print(".
+                        if (q9(elementos_comillas[0])) {          // Se comprueba la palabra ":print("
+                              System.out.println(" (q9, #:, q10)");
+                              System.out.println(" (q10, print(\", q11)");
+                              if (q10(elementos_comillas[1])) {         // Compruba si la cadena contiene sólo letras o números
+                                    System.out.println(" (q11, e, q12)");
+                                    if (q11(elementos_comillas[2])) {         // Comprobar palabra ");break;"
+                                          System.out.println(" (q12, \"), q13)");
+                                          System.out.println(" (q13, ;break;, q14)");
+                                          System.out.println(" (q14, e, q15)");
                                           bandera = true;
                                     } else {
                                           printErrorMessage();
