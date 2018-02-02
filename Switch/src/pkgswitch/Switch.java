@@ -4,70 +4,94 @@ import java.util.Scanner;
 
 public class Switch {
 
-    static boolean stillBeingNumber = false;
-    static boolean stillBeingLetter = false;
-
     public static void main(String[] args) {
         boolean ok = true;
-        boolean nextPart = false;
         Scanner input = new Scanner(System.in);
         String cadena;
         String elementos[];  //División de la cadena por %            
-        //Cadena original = Switch(#VAR#){%case#VAR#:print("TEXT");break;%default:print("TEXT");}
-        //Cadena original = 
-        // Switch(VAR)#{case VAR:print("TEXT");break;default:print("TEXT");}
-        System.out.print("Ingrese la cadena >> ");
+        //Cadena original = Switch(#VAR#){%case#VAR#:print("TEXT");break;%}
+        System.out.print("\nIngrese la cadena >> ");
         cadena = input.nextLine();
-        String separacionDeSwitch[] = cadena.split("#"); // -> Esto genera lo siguiente:
-                                                         // [0] Switch(var)
-                                                         // [1] {caseVAR:print("TEXT");break;default:print("TEXT");}
-        String separacionSemiColon[] = separacionDeSwitch[1].split(";");
+        String splitPorcentaje[] = null;
+        //Split a cada posición resultante por #
+        String splitResultante0[] = null;
+        String splitResultante1[] = null;
+        //Split a splitResultante[2] por "\"".
+        String splitResultanteComillas[] = null;
         
-        for(int i = 0; i < separacionSemiColon.length; i++){
-            System.out.println(separacionSemiColon[i]);
-        }
-        //Verificar que el usuario haya introducido -> Switch(----)
-        if(q0(separacionDeSwitch[0])){
-            //Validar la variable del usuario
-            String variableUsuario = separacionDeSwitch[0].substring(7,separacionDeSwitch[0].length()-1);
-            System.out.println("Variable = " + variableUsuario);    //OK
-            //Validar si va a q2 o a q3
-            if(q1(variableUsuario)){//Si es una variable de números
-                //validar con q2 que la variable sea un número
-                if(q2(variableUsuario)){
-                    //proceder al estado q4
-                    if(q4(separacionDeSwitch[0].substring(separacionDeSwitch[0].length()-1, separacionDeSwitch[0].length()))){
-                        //Si la primera parte termina con ")" ----> OK
-                        nextPart = true;
-                    }else{
-                        printErrorMessage();
-                    }
-                }else{
-                    printErrorMessage();
-                }
-            }else{// si es una variable de caracteres
-                //validar con q3 que la variable sea un string
-                if(q3(variableUsuario)){
-                    //proceder al estado q4
-                    if(q4(separacionDeSwitch[0].substring(separacionDeSwitch[0].length()-1, separacionDeSwitch[0].length()))){
-                        //Si la primera parte termina con ")" ----> OK
-                        nextPart = true;
-                    }else{
-                        printErrorMessage();
-                    }
-                }else{
-                    printErrorMessage();
-                }
-            }
-        }else{
+        /*
+            Hago esto por la seguridad del programa,
+            ya que si el usuario metía algo así:
+            Swicth(#var#)%ALGOMAS
+            no podría hacer el split de manera adecuada,
+            entonces, arrojo el error sin que se crashee :v
+            Continúa con el algoritmo siempre y cuando no haya ocurrido
+            una excepción.
+        
+            # PincheAutómataTodoMecoSionoRasa :v
+            # PincheDiseñadorDelAutómataTodoMecoSionoRasa :v
+            
+            Este código le costó 3 litros de Coca Cola, sudor y sangre a ---> Luis Fernando Hernández Morales
+        */
+        
+        try{
+            splitPorcentaje = cadena.split("%");
+            splitResultante0 = splitPorcentaje[0].split("#");
+            splitResultante1 = splitPorcentaje[1].split("#");
+            splitResultanteComillas = splitResultante1[2].split("\"");
+        }catch(Exception e){
+            ok = false;
             printErrorMessage();
         }
         
-        
-        //  Si la parte del Switch salió con éxito, continuar con el complemento
-        if(nextPart){
-            
+        if(ok){
+            //Llamar a q0
+            if(q0(splitResultante0[0])){
+                //Transición a q1
+                if(q1(splitResultante0[1])){//Si es letra se irá hacia q3
+                    //Transición a q3
+                    if(q3(splitResultante0[1])){
+                        if(q4(splitResultante0[2])){
+                            if(q5(splitResultante1[0])){
+                                if(q6(splitResultante1[1])){//Si es una variable de letras
+                                    
+                                }else{//Si es una variable de números
+                                    
+                                }
+                            }else{
+                                printErrorMessage();
+                            }
+                        }else{
+                            printErrorMessage();
+                        }
+                    }else{
+                        printErrorMessage();
+                    }
+                }else{
+                    //Transición a q2
+                    if(q2(splitResultante0[1])){
+                        if(q4(splitResultante0[2])){
+                            if(q5(splitResultante1[0])){
+                                if(q6(splitResultante1[1])){//Si es una variable de letras
+                                    
+                                }else{//Si es una variable de números
+                                    
+                                }
+                            }else{
+                                printErrorMessage();
+                            }
+                        }else{
+                            printErrorMessage();
+                        }
+                    }else{
+                        printErrorMessage();
+                    }
+                }
+            }else{
+                printErrorMessage();
+            }
         }
+        
     }
 
     static void printErrorMessage() {
@@ -75,22 +99,14 @@ public class Switch {
     }
 
     static boolean q0(String s) {
-       boolean ok = false;
-       String subcadena = s.substring(0,7); //---> "Switch(" --> OK
-       if(subcadena.equals("Switch(") && s.charAt(s.length()-1) == ')'){ //---> "Switch(" ")"
-        ok = true;
-       }
-       return ok;
+       return s.equals("Switch(");
+       //Pero mira esa optimización papá :v
     }
 
-    //Si es letra retorna FALSE
-    //Si es número retorna TRUE
+    //Si es letra retorna TRUE
+    //Si es número retorna FALSE
     static boolean q1(String cadenita) {
-        if(isLetter(cadenita.charAt(0))) {
-            return false;
-        } else {
-            return true;
-        }
+        return isLetter(cadenita.charAt(0));
     }
 
     static boolean q2(String cadenita) {
@@ -124,20 +140,19 @@ public class Switch {
     }
     
     static boolean q4(String s){
-        if(s.equals(")")){
-            return true;
-        }else{
-            return false;
-        }
+        return s.equals("){");
     }
     
     static boolean q5(String s){
-        System.out.println("S = " + s);
-        if(s.equals("case")){
-            return true;
-        }else{
-            return false;
-        }
+        return s.equals("case");
+    }
+    
+    /*
+    TRUE si es leta
+    FALSE si es número
+    */
+    static boolean q6(String s){
+        return isLetter(s.charAt(0));
     }
 
     static boolean isLetter(char c) {
