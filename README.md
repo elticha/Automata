@@ -3,4 +3,4 @@ Autómata para una instrucción switch [Lenguajes y autómatas], [Ingeniería en
 
 *** Importante  ****
 
-Debes abrir la carpeta del proyecto con NetBeans.
+Debes abrir la carpeta del proyecto con NetBeans...
