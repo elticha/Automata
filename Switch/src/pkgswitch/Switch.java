@@ -11,10 +11,12 @@ import java.util.Scanner;
  */
 public class Switch {
 
-      static String[] elementos;
+      static String[] elementos;          // = cadena.split("%");
+      static String[] elementosGatitos;          // Almacena los arreglos de String llamados "elementos_gatoX"
       static String[] elementos_gato1;        // = elementos[1].split("#");
       static String[] elementos_gato2;        // = elementos[1].split("#");
       static String[] elementos_comillas;     // = elementos_gato2[1].split("\"");
+      static int posicionCase= 1;
 
       public static void main(String[] args) {
 
@@ -28,7 +30,7 @@ public class Switch {
             cadena = lecturaTeclado.nextLine();
             System.out.println("\n\n");
             try {
-                  elementos = cadena.split("%"); //División de la cadena introducida por el usuario, por "%".
+                  elementos = cadena.split("%");      //División de la cadena introducida por el usuario, por "%"
                   elementos_gato1 = elementos[0].split("#");
                   elementos_gato2 = elementos[1].split("#");
                   elementos_comillas = elementos_gato2[2].split("\"");
@@ -74,7 +76,7 @@ public class Switch {
                                                 System.out.println(" (q4, #){, q5)");
                                                 if (q5(elementos_gato2[0])) {     // Comprobar palabra "case"
                                                       System.out.println(" (q5, %case#, q6)");
-                                                      if (redundanciaDeCase()) {
+                                                      if (redundanciaDeCase(elementos_gato2[1])) {
                                                             if (q12(elementos[2])) {
                                                                   System.out.println(" (q15, %}, q16)");
                                                                   System.out.println("\n\n FELICIDADES !!!");
@@ -101,7 +103,7 @@ public class Switch {
                                                 System.out.println(" (q4, #){, q5)");
                                                 if (q5(elementos_gato2[0])) {     // Comprobar palabra "case"
                                                       System.out.println(" (q5, %case#, q6)");
-                                                      if (redundanciaDeCase()) {
+                                                      if (redundanciaDeCase(elementos_gato2[1])) {
                                                             if (q12(elementos[2])) {
                                                                   System.out.println(" (q15, %}, q16)");
                                                                   System.out.println("\n\n FELICIDADES !!!");
@@ -137,13 +139,14 @@ public class Switch {
             System.out.println(" * Carlos André Sánchez Malpica\n\n");
       }
 
-      static boolean redundanciaDeCase() {
+      static boolean redundanciaDeCase(String cadenaAux) {
 
             boolean bandera = false;
+            String elementosCase= cadenaAux;
 
-            if (q6(elementos_gato2[1])) {     //Si vuelvo a recibir un número
-                  System.out.println(" (q6, " + elementos_gato2[1] + ", q7)");
-                  if (q7(elementos_gato2[1])) { // Si vuelvo a recibir puros números
+            if (q6(elementosCase)) {     //Si vuelvo a recibir un número
+                  System.out.println(" (q6, " + elementosCase + ", q7)");
+                  if (q7(elementosCase)) { // Si vuelvo a recibir puros números
                         System.out.println(" (q8, e, q9)");
                         if (q9(elementos_comillas[0])) {          // Se comprueba la palabra ":print("
                               System.out.println(" (q9, #:, q10)");
@@ -153,8 +156,12 @@ public class Switch {
                                     if (q11(elementos_comillas[2])) {         // Comprobar palabra ");break;"
                                           System.out.println(" (q12, \"), q13)");
                                           System.out.println(" (q13, ;break;, q14)");
-                                          System.out.println(" (q14, e, q15)");
-                                          bandera = true;
+                                          if(elementos.length > 3){
+                                                redundanciaDeCase(elementos[++posicionCase]);
+                                          }else{
+                                                System.out.println(" (q14, e, q15)");
+                                                bandera = true;
+                                          }
                                     } else {
                                           printErrorMessage();
                                     }
@@ -167,9 +174,9 @@ public class Switch {
                   } else {
                         printErrorMessage();
                   }
-            } else if (q6Aux(elementos_gato2[1])) {      //Si vuelvo a recibir una letra
-                  System.out.println(" (q6, " + elementos_gato2[1] + ", q8)");
-                  if (q8(elementos_gato2[1])) {       // Si vuelvo a recibir puras letras
+            } else if (q6Aux(elementosCase)) {      //Si vuelvo a recibir una letra
+                  System.out.println(" (q6, " + elementosCase + ", q8)");
+                  if (q8(elementosCase)) {       // Si vuelvo a recibir puras letras
                         System.out.println(" (q7, e, q9)");        // Se comprueba la palabra ":print(".
                         if (q9(elementos_comillas[0])) {          // Se comprueba la palabra ":print("
                               System.out.println(" (q9, #:, q10)");
@@ -179,8 +186,12 @@ public class Switch {
                                     if (q11(elementos_comillas[2])) {         // Comprobar palabra ");break;"
                                           System.out.println(" (q12, \"), q13)");
                                           System.out.println(" (q13, ;break;, q14)");
-                                          System.out.println(" (q14, e, q15)");
-                                          bandera = true;
+                                          if(elementos.length > 3){
+                                                redundanciaDeCase(elementos[++posicionCase]);
+                                          }else{
+                                                System.out.println(" (q14, e, q15)");
+                                                bandera = true;
+                                          }
                                     } else {
                                           printErrorMessage();
                                     }
@@ -204,7 +215,6 @@ public class Switch {
             System.err.println(" ¡¡¡ CADENA NO ADMITIDA !!!");
       }
       // Comprobar palabra "Switch(" del inicio
-
       static boolean q0(String s) {
             boolean ok = true;
             if (!s.equals("Switch(")) {
@@ -212,27 +222,17 @@ public class Switch {
             }
             return ok;
       }
-
       // Si es número retorna TRUE
       // Sino retorna FALSE
       static boolean q1(String cadenita) {
-            if (isDigit(cadenita.charAt(0))) {
-                  return true;
-            } else {
-                  return false;
-            }
+            return isDigit(cadenita.charAt(0));
       }
       // Si es letra retorna TRUE
       // Sino retorna FALSE
 
       static boolean q1Aux(String cadenita) {
-            if (isLetter(cadenita.charAt(0))) {
-                  return true;
-            } else {
-                  return false;
-            }
+            return isLetter(cadenita.charAt(0));
       }
-
       // Si son puros números retorna TRUE
       // Sino FALSE
       static boolean q2(String cadenita) {
@@ -251,7 +251,6 @@ public class Switch {
       }
       // Si son puras letras retorna TRUE
       // Sino FALSE
-
       static boolean q3(String cadenita) {
             boolean bandera = false;
             int i = 0;
@@ -267,65 +266,33 @@ public class Switch {
             return bandera;
       }
       // Comprobar el paréntesis de cierre y llave de apertura
-
       static boolean q4(String s) {
-            if (s.equals("){")) {
-                  return true;
-            } else {
-                  return false;
-            }
+            return s.equals("){");
       }
       // Comprobar palabra "case"
-
       static boolean q5(String s) {
-            if (s.equals("case")) {
-                  return true;
-            } else {
-                  return false;
-            }
+            return s.equals("case");
       }
-
       static boolean q6(String s) {
-            if (q1(s)) {
-                  return true; // Si es número retorna TRUE
-            } else {
-                  return false; // Sino retorna FALSE
-            }
+            return q1(s); // Si es número retorna TRUE
+            // Sino retorna FALSE
       }
-
       static boolean q6Aux(String s) {
-            if (q1Aux(s)) {
-                  return true; // Si es letra retorna TRUE
-            } else {
-                  return false; // Sino retorna FALSE
-            }
+            return q1Aux(s); // Si es letra retorna TRUE
+            // Sino retorna FALSE
       }
-
       static boolean q7(String s) {
-            if (q2(s)) {
-                  return true; // Si son puros números retorna TRUE
-            } else {
-                  return false; // Sino retorna FALSE
-            }
+            return q2(s); // Si son puros números retorna TRUE
+            // Sino retorna FALSE
       }
-
       static boolean q8(String s) {
-            if (q3(s)) {
-                  return true; // Si son puras letras retorna TRUE
-            } else {
-                  return false; // Sino retorna FALSE
-            }
+            return q3(s); // Si son puras letras retorna TRUE
+            // Sino retorna FALSE
       }
-
       // Comprobar palabra ":print("
       static boolean q9(String s) {
-            if (s.equals(":print(")) {
-                  return true;
-            } else {
-                  return false;
-            }
+            return s.equals(":print(");
       }
-
       // Compruba si la cadena contiene sólo letras o números
       static boolean q10(String cadenita) {
 
@@ -342,25 +309,14 @@ public class Switch {
             }
             return bandera;
       }
-
       // Comprobar palabra ");break;"
       static boolean q11(String s) {
-            if (s.equals(");break;")) {
-                  return true;
-            } else {
-                  return false;
-            }
+            return s.equals(");break;");
       }
-
       // Comprobar palabra "}"
       static boolean q12(String s) {
-            if (s.equals("}")) {
-                  return true;
-            } else {
-                  return false;
-            }
+            return s.equals("}");
       }
-
       // Comprueba si un caracter es letra
       static boolean isLetter(char c) {
             int asciiCode = (int) c;
@@ -377,7 +333,6 @@ public class Switch {
             return false;
       }
       // Comprueba si un caracter es dígito
-
       static boolean isDigit(char c) {
             int asciiCode = (int) c;
             for (int i = 48; i <= 57; i++) {
